@@ -1,4 +1,6 @@
 import { emberekLISTA } from "./adat.js";
+import { szuresNevSzerint, tablazatRendez } from "./adatkezelo.js";
+import { megjelenites, tablazatOsszeallit } from "./fuggvenyek.js";
 
 /*jelenítsük meg az adatainkat egy tábéázatban az adatok divben,
     az urlap divben pedig legyen egy űrlap, amivel ilyen adatokat tudunk a táblázatba beletenni.
@@ -20,3 +22,54 @@ Milyen füfggvények kellenek?
     amelyekben szerepel a név mezőjében az adott szó. Ezután  megjelenítjük a szűrt listát az oldalon.
     Akkor fog lefutni, amikor megváltozik a szűrőmező tartalma
 */
+
+// szorgalmi: lehessen rendezni kor szerint is
+// vagy tetszoleges mezi szerint akár!!!
+// mia hiba a programban TESZTELÖS
+
+let nevIrany=1
+init(emberekLISTA)
+
+
+function init(lista){
+    let txt=tablazatOsszeallit(lista)
+    megjelenites(txt)
+    nevRendezEsemeny(lista)
+    sorTorlesEsemeny()
+}
+
+
+function nevRendezEsemeny(lista, ){
+
+    //ha a táblázat név fejlécmezőjére kattintunk, berendezzük a listá é smegjelenítjük újra a táblázatot.
+    const nevekElem=$(".adatok th").eq(0)   // elso fejlec th elem
+    nevekElem.on("click", function(){
+        const LISTA = tablazatRendez(lista, nevIrany)
+        //console.log(LISTA)
+        nevIrany*=(-1)
+        
+        init(LISTA)
+    })
+
+}
+
+/* a szürőbe írt szó alapján kilistázza azoakt az adatokat a listából, 
+    amelyekben szerepel a név mezőjében az adott szó. Ezután  megjelenítjük a szűrt listát az oldalon.
+    Akkor fog lefutni, amikor megváltozik a szűrőmező tartalma */
+const szuroELEM=$("#szNev")
+szuroELEM.on("keyup", function(){
+    let szuroSZoveg=szuroELEM.val() //value
+    const LISTA = szuresNevSzerint(emberekLISTA, szuroSZoveg)
+    init(LISTA)
+})
+
+
+function sorTorlesEsemeny(){
+    const kukaELEM =$(".kuka")
+    kukaELEM.on("click", function(){
+        let index=event.target.id // az aktualis kuka indexe
+        const LISTA =sorTorles(emberekLISTA, index)
+        init(LISTA)
+    })
+
+}
