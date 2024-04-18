@@ -31,7 +31,7 @@ let nevIrany=1
 init(emberekLISTA)
 
 
-function init(lista){
+export function init(lista){
     let txt=tablazatOsszeallit(lista)
     megjelenites(txt)
     nevRendezEsemeny(lista)
@@ -66,7 +66,7 @@ szuroELEM.on("keyup", function(){
 
 function sorTorlesEsemeny(){
     const kukaELEM =$(".kuka")
-    kukaELEM.on("click", function(){
+    kukaELEM.on("click", function(event){
         let index=event.target.id // az aktualis kuka indexe
         const LISTA =sorTorles(emberekLISTA, index)
         init(LISTA)
